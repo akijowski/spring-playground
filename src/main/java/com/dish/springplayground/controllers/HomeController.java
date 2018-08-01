@@ -10,4 +10,7 @@ public class HomeController {
     public String helloWorld() {
         return "Hello from Spring!";
     }
+
+    @GetMapping("/math/pi")
+    public String calcPi() { return "3.141592653589793"; }
 }
