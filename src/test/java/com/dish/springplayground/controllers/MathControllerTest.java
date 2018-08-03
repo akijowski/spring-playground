@@ -8,8 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,6 +69,42 @@ public class MathControllerTest {
         String expected = "4 + 5 + 6 = 15";
 
         this.mockMvc.perform(post("/math/sum?n=4&n=5&n=6"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expected));
+    }
+
+    @Test
+    public void math_volume_endpoint_get_returns_volume_of_rectangle() throws Exception {
+        String expected = "The volume of a 2x3x4 rectangle is 24";
+
+        this.mockMvc.perform(get(String.format("/math/volume/%d/%d/%d", 2, 3, 4)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expected));
+    }
+
+    @Test
+    public void math_volume_endpoint_post_returns_volume_of_rectangle() throws Exception {
+        String expected = "The volume of a 2x3x4 rectangle is 24";
+
+        this.mockMvc.perform(post(String.format("/math/volume/%d/%d/%d", 2, 3, 4)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expected));
+    }
+
+    @Test
+    public void math_volume_endpoint_patch_returns_volume_of_rectangle() throws Exception {
+        String expected = "The volume of a 2x3x4 rectangle is 24";
+
+        this.mockMvc.perform(patch(String.format("/math/volume/%d/%d/%d", 2, 3, 4)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expected));
+    }
+
+    @Test
+    public void math_volume_endpoint_put_returns_volume_of_rectangle() throws Exception {
+        String expected = "The volume of a 2x3x4 rectangle is 24";
+
+        this.mockMvc.perform(put(String.format("/math/volume/%d/%d/%d", 2, 3, 4)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(expected));
     }
