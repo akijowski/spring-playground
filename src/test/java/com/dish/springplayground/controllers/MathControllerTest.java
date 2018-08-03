@@ -4,8 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -105,6 +107,52 @@ public class MathControllerTest {
         String expected = "The volume of a 2x3x4 rectangle is 24";
 
         this.mockMvc.perform(put(String.format("/math/volume/%d/%d/%d", 2, 3, 4)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expected));
+    }
+
+    @Test
+    public void math_area_endpoint_returns_area_of_circle() throws Exception {
+        String expected = "Area of a circle with a radius of 4 is 50.26548";
+
+        MockHttpServletRequestBuilder request = post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type", "circle")
+                .param("radius", "4");
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(expected));
+
+    }
+
+    @Test
+    public void math_area_endpoint_returns_area_of_rectangle() throws Exception {
+        String expected = "Area of a 4x7 rectangle is 28";
+
+        MockHttpServletRequestBuilder request = post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type", "rectangle")
+                .param("width", "4")
+                .param("length", "7");
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(expected));
+
+    }
+
+    @Test
+    public void math_area_endpoint_returns_invalid_when_not_rectangle_or_circle() throws Exception {
+        String expected = "Invalid";
+
+        MockHttpServletRequestBuilder request = post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type", "triangle")
+                .param("width", "4")
+                .param("length", "7");
+
+        this.mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().string(expected));
     }

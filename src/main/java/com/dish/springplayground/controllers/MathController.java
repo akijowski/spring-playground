@@ -1,6 +1,8 @@
 package com.dish.springplayground.controllers;
 
+import com.dish.springplayground.model.Area;
 import com.dish.springplayground.services.MathService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +33,12 @@ public class MathController {
         int h = Integer.parseInt(pathVariables.get("height").toString());
         int vol = l * w * h;
         return String.format("The volume of a %dx%dx%d rectangle is %d", l, w, h, vol);
+    }
+
+    @PostMapping(value = "/area",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String area(Area area) {
+//        System.out.println(area);
+        return area.calculateArea();
     }
 }
