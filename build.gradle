@@ -3,9 +3,10 @@ buildscript {
 		springBootVersion = '2.0.4.RELEASE'
 	}
 	repositories {
-		maven {
-			url 'https://artifactory.global.dish.com/artifactory/repo'
-		}
+//		maven {
+//			url 'https://artifactory.global.dish.com/artifactory/repo'
+//		}
+		jcenter()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -22,14 +23,15 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-	maven {
-		url 'https://artifactory.global.dish.com/artifactory/repo'
-	}
+//	maven {
+//		url 'https://artifactory.global.dish.com/artifactory/repo'
+//	}
+	jcenter()
 }
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '4.8'
-	distributionUrl = "https://artifactory.global.dish.com/artifactory/repo/gradle-${gradleVersion}-bin.zip"
+//	distributionUrl = "https://artifactory.global.dish.com/artifactory/repo/gradle-${gradleVersion}-bin.zip"
 }
 
 dependencies {
