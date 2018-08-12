@@ -1,8 +1,8 @@
 package com.dish.springplayground.controllers;
 
 import com.dish.springplayground.model.Flight;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.dish.springplayground.services.FlightService;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -99,5 +99,12 @@ public class HomeController {
         flight2.setDeparts(date2);
 
         return asList(flight1, flight2);
+    }
+
+    @PostMapping("/flights/tickets/total")
+    public String getTicketTotal(@RequestBody Flight flight) {
+
+        System.out.println(flight);
+        return FlightService.getTicketTotal(flight);
     }
 }

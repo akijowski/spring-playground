@@ -36,6 +36,7 @@ task wrapper(type: Wrapper) {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.skyscreamer:jsonassert:1.5.0')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.skyscreamer.jsonassert:jsonassert:1.5.0')
+	testCompile('org.skyscreamer:jsonassert:1.5.0')
 }

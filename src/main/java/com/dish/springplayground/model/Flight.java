@@ -32,6 +32,14 @@ public class Flight {
         this.tickets = tickets;
     }
 
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "departs=" + departs +
+                ", tickets=" + tickets +
+                '}';
+    }
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Ticket {
 
@@ -54,6 +62,14 @@ public class Flight {
 
         public void setPassenger(Person passenger) {
             this.passenger = passenger;
+        }
+
+        @Override
+        public String toString() {
+            return "Ticket{" +
+                    "price=" + price +
+                    ", passenger=" + passenger +
+                    '}';
         }
     }
 
@@ -79,6 +95,14 @@ public class Flight {
 
         public void setLastName(String lastName) {
             this.lastName = lastName;
+        }
+
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "firstName='" + firstName + '\'' +
+                    ", lastName='" + lastName + '\'' +
+                    '}';
         }
     }
 }
