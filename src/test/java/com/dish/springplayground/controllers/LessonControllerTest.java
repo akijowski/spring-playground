@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -92,6 +93,55 @@ public class LessonControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", equalTo(afterTitle)))
                 .andExpect(jsonPath("$.deliveredOn", equalTo(afterDate)));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testFindLessonByTitle() throws Exception {
+        Lesson lessonToFind = new Lesson();
+        String lessonTitle = "SQL";
+        lessonToFind.setTitle(lessonTitle);
+        lessonToFind.setDeliveredOn(new Date());
+
+        repository.save(lessonToFind);
+
+        MockHttpServletRequestBuilder request = get("/lessons/find/{title}", lessonTitle);
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", equalTo(lessonTitle)));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testFindLessonBetweenDates() throws Exception {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = dateFormat.parse("2014-03-17");
+        Date date2 = dateFormat.parse("2015-03-17");
+
+        Lesson lesson1 = new Lesson();
+        lesson1.setDeliveredOn(date1);
+        lesson1.setTitle("Dependency Injection");
+
+        Lesson lesson2 = new Lesson();
+        lesson2.setDeliveredOn(date2);
+        lesson2.setTitle("Transactions");
+
+        repository.save(lesson1);
+        repository.save(lesson2);
+
+        MockHttpServletRequestBuilder request = get("/lessons/between?date1={1}&date2={2}", "2014-03-16", "2015-03-17");
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", instanceOf(Number.class)))
+                .andExpect(jsonPath("[0].title", equalTo("Dependency Injection")))
+                .andExpect(jsonPath("$[0].deliveredOn", equalTo("2014-03-17")))
+                .andExpect(jsonPath("$[1].id", instanceOf(Number.class)))
+                .andExpect(jsonPath("[1].title", equalTo("Transactions")))
+                .andExpect(jsonPath("$[1].deliveredOn", equalTo("2015-03-17")));
     }
 
     private String getJSON(String path) throws Exception {

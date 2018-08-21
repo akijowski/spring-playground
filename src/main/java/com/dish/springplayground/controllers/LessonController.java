@@ -4,7 +4,12 @@ import com.dish.springplayground.model.Lesson;
 import com.dish.springplayground.repositories.LessonRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
+
+import static java.util.Collections.emptyList;
 
 @RestController
 @RequestMapping("/lessons")
@@ -24,6 +29,33 @@ public class LessonController {
     @GetMapping("/{id}")
     public Lesson findById(@PathVariable long id) {
         return this.repository.findById(id).get();
+    }
+
+    @GetMapping("/find/{title}")
+    public Lesson findByTitle(@PathVariable String title) {
+        return this.repository.findByTitle(title);
+    }
+
+    @GetMapping("/between")
+    public Iterable<Lesson> findBetweenDeliveredOn(
+            @RequestParam String date1,
+            @RequestParam String date2) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date before = dateFormatter.parse(date1);
+            Date after = dateFormatter.parse(date2);
+//            System.out.println("before: " + before);
+//            System.out.println("after: " + after);
+//            Iterable<Lesson> lessons = this.repository.customQuery(before, after);
+            Iterable<Lesson> lessons = this.repository.findByDeliveredOnBetween(before, after);
+//            for(Lesson l : lessons) {
+//                System.out.println("lesson: " + l.getId() + ", " + l.getTitle() + ", " + l.getDeliveredOn());
+//            }
+            return lessons;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return emptyList();
+        }
     }
 
     @PostMapping("")
