@@ -23,6 +23,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,9 +70,34 @@ public class LessonControllerTest {
                 .andExpect(jsonPath("$.id", instanceOf(Number.class)));
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void testUpdateLesson() throws  Exception {
+        String beforeTitle = "Spring insecurity";
+        String afterTitle = "Spring Security";
+        String afterDate = "2017-04-12";
+
+        Lesson lessonToUpdate = new Lesson();
+        lessonToUpdate.setTitle(beforeTitle);
+        lessonToUpdate.setDeliveredOn(new Date());
+
+        repository.save(lessonToUpdate);
+
+        MockHttpServletRequestBuilder request = patch("/lessons/{id}", lessonToUpdate.getId().intValue())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJSON("/lessonUpdateSample.json"));
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", equalTo(afterTitle)))
+                .andExpect(jsonPath("$.deliveredOn", equalTo(afterDate)));
+    }
+
     private String getJSON(String path) throws Exception {
         URL url = this.getClass().getResource(path);
         String json = new String(Files.readAllBytes(Paths.get(url.getFile())));
         return json;
     }
+
 }

@@ -4,6 +4,8 @@ import com.dish.springplayground.model.Lesson;
 import com.dish.springplayground.repositories.LessonRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/lessons")
 public class LessonController {
@@ -27,6 +29,22 @@ public class LessonController {
     @PostMapping("")
     public Lesson create(@RequestBody Lesson lesson) {
         return this.repository.save(lesson);
+    }
+
+    @PatchMapping("/{id}")
+    public Lesson update(
+            @PathVariable long id,
+            @RequestBody Lesson lessonRequest) {
+        Optional<Lesson> lessonToUpdate = this.repository.findById(id);
+        if (lessonToUpdate.isPresent()) {
+            Lesson updateLesson = lessonToUpdate.get();
+            updateLesson.setDeliveredOn(lessonRequest.getDeliveredOn());
+            updateLesson.setTitle(lessonRequest.getTitle());
+            return this.repository.save(updateLesson);
+        } else {
+            System.out.println("No lesson found matching request, saving as new to database");
+            return this.repository.save(lessonRequest);
+        }
     }
 
     @DeleteMapping("/{id}")
