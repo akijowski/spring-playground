@@ -17,12 +17,10 @@ public class WordController {
     public WordController(WordCounter wordCounter) {
         this.wordCounter = wordCounter;
     }
-//    @Autowired
-//    WordCounter wordCounter;
 
     @PostMapping("/count")
     public Map<String, Integer> wordCount(@RequestBody String input) {
-        System.out.println("input recieved: " + input);
+        System.out.println("input received: " + input);
         return this.wordCounter.count(input);
     }
 }
