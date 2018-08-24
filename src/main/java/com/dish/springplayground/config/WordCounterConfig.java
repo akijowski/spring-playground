@@ -1,14 +1,43 @@
 package com.dish.springplayground.config;
 
-import com.dish.springplayground.services.WordCounter;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-public class WordCounterConfig {
+import java.util.ArrayList;
+import java.util.List;
 
-    @Bean
-    public WordCounter getWordCounter() {
-        return new WordCounter();
+@Configuration
+@ConfigurationProperties("word-count")
+public class WordCounterConfig {
+    private boolean caseSensitive;
+    private Words words;
+
+    public boolean isCaseSensitive() {
+        return caseSensitive;
+    }
+
+    public void setCaseSensitive(boolean caseSensitive) {
+        this.caseSensitive = caseSensitive;
+    }
+
+    public Words getWords() {
+        return words;
+    }
+
+    public void setWords(Words words) {
+        this.words = words;
+    }
+
+    public static class Words {
+
+        List<String> skip = new ArrayList<>();
+
+        public List<String> getSkip() {
+            return skip;
+        }
+
+        public void setSkip(List<String> skip) {
+            this.skip = skip;
+        }
     }
 }

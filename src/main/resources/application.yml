@@ -9,3 +9,11 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL57Dialect
+
+wordCount:
+  caseSensitive: false
+  words:
+    skip:
+      - the
+      - an
+      - a
