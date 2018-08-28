@@ -26,6 +26,10 @@ public class MovieService {
         this.restTemplate = new RestTemplate();
     }
 
+    public RestTemplate getRestTemplate() {
+        return restTemplate;
+    }
+
     public List<Movie> getMovies(String queryParam) {
         System.out.println("getMovies() queryParam: " + queryParam);
         List<Movie> movies = emptyList();

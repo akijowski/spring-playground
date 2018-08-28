@@ -38,4 +38,14 @@ public class Movie {
     public void setYear(int year) {
         this.year = year;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", imdbId='" + imdbId + '\'' +
+                ", poster='" + poster + '\'' +
+                ", year=" + year +
+                '}';
+    }
 }
