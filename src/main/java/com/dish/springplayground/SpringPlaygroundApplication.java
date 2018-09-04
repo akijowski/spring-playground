@@ -23,7 +23,19 @@ public class SpringPlaygroundApplication {
 			Employee employee = new Employee();
 			employee.setName("Employee");
 			employee.setSalary(24);
+			//
+			employee.setUsername("employee");
+			employee.setPassword("employee-password");
+			employee.setRole("EMPLOYEE");
 			employeeRepository.save(employee);
+
+			Employee boss = new Employee();
+			boss.setName("Bossy Boss");
+			boss.setSalary(24);
+			boss.setUsername("boss");
+			boss.setPassword("boss-password");
+			boss.setRole("MANAGER");
+			employeeRepository.save(boss);
 		};
 	}
 }
