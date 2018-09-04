@@ -16,12 +16,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().mvcMatchers("/flights/**", "/math/**").permitAll();
+        http.authorizeRequests().mvcMatchers("/admin/**").hasRole("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("employee").password("employee-password").roles("EMPLOYEE");
+                .withUser("employee").password("employee-password").roles("EMPLOYEE")
+                .and()
+                .withUser("boss").password("boss-password").roles("MANAGER");
     }
 }
