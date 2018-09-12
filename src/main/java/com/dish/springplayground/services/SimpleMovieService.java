@@ -1,9 +1,7 @@
 package com.dish.springplayground.services;
 
-import com.dish.springplayground.model.Movie;
+import com.dish.springplayground.model.SimpleMovie;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,12 +15,12 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 @Service
-public class MovieService {
+public class SimpleMovieService {
 
     private final RestTemplate restTemplate;
     private final String HOST = "http://www.omdbapi.com/?s={search}";
 
-    public MovieService() {
+    public SimpleMovieService() {
         this.restTemplate = new RestTemplate();
     }
 
@@ -30,9 +28,9 @@ public class MovieService {
         return restTemplate;
     }
 
-    public List<Movie> getMovies(String queryParam) {
+    public List<SimpleMovie> getMovies(String queryParam) {
         System.out.println("getMovies() queryParam: " + queryParam);
-        List<Movie> movies = emptyList();
+        List<SimpleMovie> simpleMovies = emptyList();
         try {
             URI uri = getSearchUri(queryParam);
             System.out.println("using uri: " + uri.toString());
@@ -41,17 +39,17 @@ public class MovieService {
                     .header("Authorization", "some-token")
                     .build();
 
-           ResponseEntity<List<Movie>> movieResponse = restTemplate.exchange(
+           ResponseEntity<List<SimpleMovie>> movieResponse = restTemplate.exchange(
                    request,
-                   new ParameterizedTypeReference<List<Movie>>() {
+                   new ParameterizedTypeReference<List<SimpleMovie>>() {
                    }
            );
-           System.out.println(String.format("Found %s movies: %s", movieResponse.getBody().size(), movieResponse.getBody()));
-           movies = movieResponse.getBody();
+           System.out.println(String.format("Found %s simpleMovies: %s", movieResponse.getBody().size(), movieResponse.getBody()));
+           simpleMovies = movieResponse.getBody();
         } catch (RestClientException rce) {
             rce.printStackTrace();
         }
-        return movies;
+        return simpleMovies;
     }
 
     private URI getSearchUri(String search) {

@@ -1,11 +1,44 @@
 package com.dish.springplayground.model;
 
-public class Movie {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.hateoas.ResourceSupport;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Movie extends ResourceSupport {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long movieId;
 
     private String title;
-    private String imdbId;
-    private String poster;
-    private int year;
+
+    @JsonCreator
+    public Movie(@JsonProperty("movieId") long movieId, @JsonProperty("title") String title) {
+        this.movieId = movieId;
+        this.title = title;
+    }
+
+    public Movie(String title) {
+        this.title = title;
+    }
+
+    public Movie() {
+    }
+
+    public Long getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(Long movieId) {
+        this.movieId = movieId;
+    }
 
     public String getTitle() {
         return title;
@@ -13,39 +46,5 @@ public class Movie {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getImdbId() {
-        return imdbId;
-    }
-
-    public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
-    }
-
-    public String getPoster() {
-        return poster;
-    }
-
-    public void setPoster(String poster) {
-        this.poster = poster;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", imdbId='" + imdbId + '\'' +
-                ", poster='" + poster + '\'' +
-                ", year=" + year +
-                '}';
     }
 }

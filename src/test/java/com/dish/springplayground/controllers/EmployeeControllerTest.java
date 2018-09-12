@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -66,6 +67,15 @@ public class EmployeeControllerTest {
         RequestBuilder request = get("/employees").with(anonymous());
 
         mockMvc.perform(request).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = "EMPLOYEE")
+    public void getMeSample() throws Exception {
+        RequestBuilder request = get("/employees/me");
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
     }
 
 }

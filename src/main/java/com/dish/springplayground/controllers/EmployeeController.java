@@ -39,6 +39,7 @@ public class EmployeeController {
 
     @GetMapping("/me")
     public Employee getMe(@AuthenticationPrincipal Employee employee) {
+        System.out.println(String.format("GET /me with employee: %s", employee));
         return employee;
     }
 }

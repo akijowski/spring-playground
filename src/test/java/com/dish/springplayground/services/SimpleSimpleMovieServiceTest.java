@@ -1,6 +1,6 @@
 package com.dish.springplayground.services;
 
-import com.dish.springplayground.model.Movie;
+import com.dish.springplayground.model.SimpleMovie;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpMethod;
@@ -22,11 +22,11 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 
 @RunWith(SpringRunner.class)
-public class MovieServiceTest {
+public class SimpleSimpleMovieServiceTest {
 
     @Test
     public void getMovies_shouldReturnListOfMovies() throws Exception {
-        MovieService service = new MovieService();
+        SimpleMovieService service = new SimpleMovieService();
 
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(service.getRestTemplate());
 
@@ -35,13 +35,13 @@ public class MovieServiceTest {
                 .andExpect(header("Accept", "application/json, application/*+json"))
                 .andRespond(withSuccess(getJSON("/sampleMovies.json"), MediaType.APPLICATION_JSON));
 
-        List<Movie> movies = service.getMovies("Harry");
+        List<SimpleMovie> simpleMovies = service.getMovies("Harry");
 
-        assertThat(movies.size(), equalTo(2));
-        assertThat(movies.get(0).getImdbId(), equalTo("tt1201607"));
-        assertThat(movies.get(0).getPoster(), equalTo("https://images-na.ssl-imag..."));
-        assertThat(movies.get(0).getTitle(), equalTo("Harry Potter and the Deathly Hallows: Part 2"));
-        assertThat(movies.get(0).getYear(), equalTo(2011));
+        assertThat(simpleMovies.size(), equalTo(2));
+        assertThat(simpleMovies.get(0).getImdbId(), equalTo("tt1201607"));
+        assertThat(simpleMovies.get(0).getPoster(), equalTo("https://images-na.ssl-imag..."));
+        assertThat(simpleMovies.get(0).getTitle(), equalTo("Harry Potter and the Deathly Hallows: Part 2"));
+        assertThat(simpleMovies.get(0).getYear(), equalTo(2011));
 
         mockServer.verify();
     }
